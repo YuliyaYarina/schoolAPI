@@ -5,10 +5,10 @@ public class Faculty {
     private String name;
     private String color;
 
-    public Faculty(Long id, String name, String age) {
+    public Faculty(Long id, String name, String color) {
         this.id = id;
         this.name = name;
-        this.color = age;
+        this.color = color;
     }
 
     public Long getId() {
@@ -33,5 +33,14 @@ public class Faculty {
 
     public void setColor(String color) {
         this.color = color;
+    }
+
+    @Override
+    public String toString() {
+        return "Faculty{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", color='" + color + '\'' +
+                '}';
     }
 }
