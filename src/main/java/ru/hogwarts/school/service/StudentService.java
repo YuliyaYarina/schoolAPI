@@ -3,31 +3,42 @@ package ru.hogwarts.school.service;
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.model.Student;
 
+import java.util.Collection;
 import java.util.HashMap;
-import java.util.Map;
+import java.util.stream.Stream;
+
 @Service
 public class StudentService {
 
-    private Map<Long, Student> studentMap = new HashMap<>();
-    private Long generatedUserId = 1L;
+    private final HashMap<Long, Student> studentMap = new HashMap<>();
+    private long studentId = 0;
 
-
-    public Student createUser(Student student) {
-        studentMap. put(generatedUserId, student);
-        generatedUserId++;
+    public Student createStudent(Student student) {
+        student.setId(++studentId);
+        studentMap.put(studentId, student);
         return student;
     }
 
-    public Student getUserById(Long userId) {
-        return studentMap.get(userId);
+    public Student findStudentById(long Id) {
+        return studentMap.get(Id);
+    }
+    public Collection<Student> getAllStudent() {
+        return studentMap.values();
     }
 
-    public Student updateUser(Long userId, Student student) {
-        studentMap.put(generatedUserId, student);
-        return student;
+    public Student editStudent(Student student) {
+        if (studentMap.containsKey(student.getId())) {
+            studentMap.put(student.getId(), student);
+            return student;
+        }
+        return null;
     }
 
-    public Student deleteUser(Long userId) {
-        return studentMap.remove(userId);
+    public Student deleteStudent(long Id) {
+        return studentMap.remove(Id);
+    }
+
+    public Stream<Student> getAgeStusent(int age) {
+        return getAllStudent().stream().filter(s->s.getAge() == age);
     }
 }

@@ -3,12 +3,12 @@ package ru.hogwarts.school.model;
 public class Faculty {
     private Long id;
     private String name;
-    private String age;
+    private String color;
 
     public Faculty(Long id, String name, String age) {
         this.id = id;
         this.name = name;
-        this.age = age;
+        this.color = age;
     }
 
     public Long getId() {
@@ -27,11 +27,11 @@ public class Faculty {
         this.name = name;
     }
 
-    public String getAge() {
-        return age;
+    public String getColor() {
+        return color;
     }
 
-    public void setAge(String age) {
-        this.age = age;
+    public void setColor(String color) {
+        this.color = color;
     }
 }
