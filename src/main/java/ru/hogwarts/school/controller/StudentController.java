@@ -40,13 +40,14 @@ public class StudentController {
         return ResponseEntity.ok(updatedStudent);
     }
     @DeleteMapping("{id}")
-    public Student deleteBStudent(@PathVariable long id){
-        return studentService.deleteStudent(id);
+    public ResponseEntity deleteBStudent(@PathVariable long id){
+         studentService.deleteStudent(id);
+         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/age")
-    public Stream<Student> filterAge(@RequestParam int age){
-        return studentService.getAgeStusent(age);
-    }
+//    @GetMapping("/age")
+//    public Stream<Student> filterAge(@RequestParam int age){
+//        return studentService.getAgeStusent(age);
+//    }
 
 }

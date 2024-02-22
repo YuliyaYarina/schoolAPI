@@ -45,12 +45,13 @@ public class FacultyController {
     }
 
     @DeleteMapping("{id}")
-    public Faculty deleteBook(@PathVariable long id){
-        return facultyService.deleteFaculty(id);
+    public ResponseEntity deleteBook(@PathVariable long id){
+        facultyService.deleteFaculty(id);
+        return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/color")
-    public Stream<Faculty> filterColor(@RequestParam String color){
-        return facultyService.getColorFaculty(color);
-    }
+//    @GetMapping("/color")
+//    public Stream<Faculty> filterColor(@RequestParam String color){
+//        return facultyService.getColorFaculty(color);
+//    }
 }
