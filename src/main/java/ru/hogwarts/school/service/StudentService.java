@@ -3,31 +3,55 @@ package ru.hogwarts.school.service;
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.model.Student;
 
+import javax.annotation.PostConstruct;
+import java.util.Collection;
 import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static java.awt.AWTEventMulticaster.add;
+
 @Service
 public class StudentService {
 
-    private Map<Long, Student> studentMap = new HashMap<>();
-    private Long generatedUserId = 1L;
+    private final HashMap<Long, Student> studentMap = new HashMap<>();
+    private static long studentId = 1;
 
+    @PostConstruct
+    public void initStudents() {
+        add(new Student("ivan", 33));
+        add(new Student("Dmitry", 10));
+    }
 
-    public Student createUser(Student student) {
-        studentMap. put(generatedUserId, student);
-        generatedUserId++;
+    public Student add(Student student) {
+        student.setId(studentId++);
+        studentMap.put(student.getId(), student);
         return student;
     }
 
-    public Student getUserById(Long userId) {
-        return studentMap.get(userId);
+    public Student findStudentById(long id) {
+        return studentMap.get(id);
+    }
+    public Collection<Student> getAllStudent() {
+        return studentMap.values();
     }
 
-    public Student updateUser(Long userId, Student student) {
-        studentMap.put(generatedUserId, student);
-        return student;
+    public Student editStudent(Long id, Student student) {
+        Student student1= studentMap.get(id);
+        student1.setName(student.getName());
+        student1.setAge(student.getAge());
+        return student1;
     }
 
-    public Student deleteUser(Long userId) {
-        return studentMap.remove(userId);
+    public Student deleteStudent(long Id) {
+        return studentMap.remove(Id);
+    }
+
+    public List<Student> getAgeStusent(int age) {
+        return studentMap.values()
+                        .stream()
+                .filter(s->s.getAge() == age)
+                .collect(Collectors.toList());
     }
 }
