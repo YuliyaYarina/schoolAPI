@@ -7,6 +7,7 @@ import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.service.FacultyService;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.stream.Stream;
 
 @RequestMapping("/faculty")
@@ -18,9 +19,9 @@ public class FacultyController {
         this.facultyService = facultyService;
     }
 
-    @PostMapping("{id}")
+    @PostMapping
     public Faculty createFaculty(@RequestBody Faculty faculty) {
-        return facultyService.createFaculty(faculty);
+        return facultyService.add(faculty);
     }
 
     @GetMapping("{id}")
@@ -35,13 +36,9 @@ public class FacultyController {
     private ResponseEntity<Collection<Faculty>> getAllFaculty () {
         return ResponseEntity.ok(facultyService.getAllFaculty());
     }
-    @PutMapping()
-    public ResponseEntity<Faculty> updateFaculty(@RequestBody Faculty faculty) {
-        Faculty updatedFaculty = facultyService.editFaculty(faculty);
-        if(updatedFaculty == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
-        return ResponseEntity.ok(updatedFaculty);
+    @PutMapping("{id}")
+    public Faculty updateFaculty(@PathVariable Long id, @RequestBody Faculty faculty) {
+        return facultyService.editFaculty(id, faculty);
     }
 
     @DeleteMapping("{id}")
@@ -50,7 +47,7 @@ public class FacultyController {
     }
 
     @GetMapping("/color")
-    public Stream<Faculty> filterColor(@RequestParam String color){
+    public List<Faculty> filterColor(@RequestParam String color){
         return facultyService.getColorFaculty(color);
     }
 }

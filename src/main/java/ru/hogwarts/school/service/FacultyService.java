@@ -4,17 +4,26 @@ import org.springframework.stereotype.Service;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 
+import javax.annotation.PostConstruct;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
 public class FacultyService {
     private Map<Long, Faculty> facultyMap = new HashMap<>();
-    private long lastId = 0;
+    private long lastId = 1;
 
-    public Faculty createFaculty(Faculty faculty) {
+    @PostConstruct
+    public void initStudents() {
+        add(new Faculty("Grifindor", "Red"));
+        add(new Faculty("Slizerin", "Grey"));
+    }
+
+    public Faculty add(Faculty faculty) {
         faculty.setId(++lastId);
         facultyMap.put(lastId, faculty);
         return faculty;
@@ -28,20 +37,22 @@ public class FacultyService {
         return facultyMap.values();
     }
 
-    public Faculty editFaculty(Faculty faculty) {
-        if (facultyMap.containsKey(faculty.getId())) {
-            facultyMap.put(lastId, faculty);
-            return faculty;
-        }
-        return null;
+    public Faculty editFaculty(Long id, Faculty faculty) {
+        Faculty faculty1= facultyMap.get(id);
+        faculty1.setName(faculty.getName());
+        faculty1.setColor(faculty.getColor());
+        return faculty1;
     }
 
     public Faculty deleteFaculty(long id) {
         return facultyMap.remove(id);
     }
 
-    public Stream<Faculty> getColorFaculty(String color) {
-        return getAllFaculty().stream().filter(f->f.getColor().equals(color));
+    public List<Faculty> getColorFaculty(String color) {
+        return facultyMap.values()
+                .stream()
+                .filter(f->f.getColor().equals(color))
+                .collect(Collectors.toList());
     }
 
 }

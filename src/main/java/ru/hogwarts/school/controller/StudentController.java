@@ -1,11 +1,11 @@
 package ru.hogwarts.school.controller;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.service.StudentService;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.stream.Stream;
 
 @RequestMapping("/student")
@@ -17,35 +17,31 @@ public class StudentController {
         this.studentService = studentService;
     }
 
-    @PostMapping("{id}")
+    @PostMapping
     public Student createStudent(@RequestBody Student student) {
-        return studentService.createStudent(student);
+        return studentService.add(student);
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<Student> getStudent(@PathVariable long id) {
-        Student student = studentService.findStudentById(id);
-        if(student == null) {
-            return ResponseEntity.notFound() .build();
-        }
-        return ResponseEntity.ok(student);
+    public Student getStudent(@PathVariable Long id) {
+        return studentService.findStudentById(id);
+    }
+    @GetMapping
+    public Collection<Student> getAllStudent() {
+        return studentService.getAllStudent();
     }
 
-    @PutMapping()
-    public ResponseEntity<Student> updateStudent(@RequestBody Student student) {
-        Student updatedStudent = studentService.editStudent(student);
-        if(updatedStudent == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
-        return ResponseEntity.ok(updatedStudent);
+    @PutMapping("{id}")
+    public Student updateStudent(@PathVariable Long id, @RequestBody Student student) {
+        return studentService.editStudent(id, student);
     }
     @DeleteMapping("{id}")
-    public Student deleteBStudent(@PathVariable long id){
+    public Student deleteBStudent(@PathVariable Long id){
         return studentService.deleteStudent(id);
     }
 
     @GetMapping("/age")
-    public Stream<Student> filterAge(@RequestParam int age){
+    public List<Student> filterAge(@RequestParam int age){
         return studentService.getAgeStusent(age);
     }
 
